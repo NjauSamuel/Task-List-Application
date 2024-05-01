@@ -24,7 +24,7 @@ Route::get('/', function () {
 
 Route::get('/tasks', function () {
     return view('index', [
-        'tasks' => \App\Models\Task::latest()->get()
+        'tasks' => Task::latest()->get()
     ]);
 })->name('tasks.index');
 
@@ -47,13 +47,14 @@ Route::post('/tasks', function (Request $request) {
 
     $task->save();
 
-    return redirect()->route('tasks.show', ['id' => $task->id]);
+    return redirect()->route('tasks.show', ['id' => $task->id])
+        ->with('success', 'Task created successfully! ');
 })->name('tasks.store');
 
 
 Route::get('/tasks/{id}', function ($id)  {
 
-    return view('show', ['task' => \App\Models\Task::findOrFail($id)]);
+    return view('show', ['task' => Task::findOrFail($id)]);
 })->name('tasks.show');
 
 
